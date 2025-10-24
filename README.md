@@ -2,7 +2,7 @@
 
 Este repositório contém uma implementação em Python do algoritmo de backtracking para encontrar um **Caminho Hamiltoniano** em um grafo orientado ou não orientado.
 
----
+
 
 ## 1. Descrição do Projeto
 
@@ -12,13 +12,13 @@ Um Caminho Hamiltoniano é um caminho que visita cada vértice do grafo exatamen
 O problema de encontrar tal caminho é um problema clássico na teoria dos grafos e é conhecido por ser **NP-Completo**.  
 A implementação fornecida utiliza uma abordagem de força bruta recursiva, conhecida como *backtracking*, para explorar todas as possibilidades de caminhos.
 
----
+
 
 ## 2. Lógica da Implementação (`main.py`)
 
 O script `main.py` é estruturado da seguinte forma:
 
-### `class Grafo`
+#### `class Grafo`
 
 Esta classe representa o grafo.
 
@@ -31,7 +31,7 @@ Esta classe representa o grafo.
 
 ---
 
-### `_encontrar_caminho_util(self, u, caminho)`
+#### `_encontrar_caminho_util(self, u, caminho)`
 
 Esta é a função recursiva (auxiliar) que implementa a lógica de *backtracking*.
 
@@ -51,7 +51,7 @@ Esta é a função recursiva (auxiliar) que implementa a lógica de *backtrackin
 
 ---
 
-### `encontrar_caminho_hamiltoniano(self)`
+#### `encontrar_caminho_hamiltoniano(self)`
 
 Esta é a função principal que inicia a busca.
 
@@ -66,11 +66,11 @@ Esta é a função principal que inicia a busca.
 
 O bloco principal decide qual modo de execução utilizar com base nos argumentos de linha de comando (`sys.argv`):
 
-### **Modo de Teste (`testes_predefinidos`)**
+#### **Modo de Teste (`testes_predefinidos`)**
 - Ativado se o script for executado **sem argumentos**(`python main.py`).
 - Esta função instancia e testa três grafos de exemplo com diferentes estruturas, imprimindo os resultados de cada um.
 
-### **Modo de Argumento (`grafo_personalizado`):**
+#### **Modo de Argumento (`grafo_personalizado`):**
 * Ativado se o script for executado com um argumento (`python main.py "..."`).
 * O argumento (`grafo_str`) é lido como uma string.
 * A função usa `ast.literal_eval` para converter com segurança a string em uma lista Python (ex: `"[[0,1]]"` se torna `[[0, 1]]`).
@@ -146,9 +146,8 @@ Você precisará do Python 3 instalado para rodar este script.
     Detalhe: unmatched ']' (<unknown>, line 1)
     ```
 
-## 4 - Relatório Técnico: Análise de Complexidade
-### Análise da Complexidade Computacional
-#### 4.1 - Classes P, NP, NP-Completo e NP-Difícil
+## 4 - Relatório Técnico: Análise da Complexidade Computacional
+### 4.1 - Classes P, NP, NP-Completo e NP-Difícil
 O Problema do Caminho Hamiltoniano (HPP) se enquadra nas seguintes classes:
 
 * **Classe NP (Nondeterministic Polynomial time):** O HPP está na classe NP. Um problema está em NP se uma solução candidata puder ser verificada em tempo polinomial.
@@ -173,7 +172,7 @@ O Problema do Caminho Hamiltoniano (HPP) se enquadra nas seguintes classes:
 
 * **Relação com o Caixeiro Viajante (TSP):** O Problema do Caminho Hamiltoniano é redutível ao TSP. Se tivéssemos um "oráculo" que resolve o TSP, poderíamos usá-lo para resolver o HPP. Basta criar um grafo completo a partir do grafo original, atribuir peso 1 às arestas que existem no original e peso 2 (ou infinito) às que não existem. Se o TSP encontrar um caminho de peso total `V-1`, então existe um Caminho Hamiltoniano.
 
-#### 4.2 - Análise da Complexidade Assintótica de Tempo
+### 4.2 - Análise da Complexidade Assintótica de Tempo
 * **Complexidade Temporal: `O(V * V!)`**
 * **Método de Determinação (Análise da Árvore de Recursão):** O algoritmo implementado é um backtracking que, no pior caso, explora todas as permutações possíveis dos vértices para verificar se formam um caminho.
     1. A função `encontrar_caminho_hamiltoniano` chama `_encontrar_caminho_util` no máximo `V` vezes (uma para cada vértice inicial).
@@ -190,7 +189,7 @@ O Problema do Caminho Hamiltoniano (HPP) se enquadra nas seguintes classes:
     Portanto, a complexidade é o número de nós na árvore de recursão (`O(V!)`) multiplicado pelo custo de processamento em cada nó (`O(V)` para o loop + `O(V)` para a verificação `in`), resultando em `O(V^2 * V!)`.
     Frequentemente, esta complexidade é simplificada para `O(V * V!)`, assumindo que a verificação `in` e a busca de vizinhos são otimizadas ou analisadas de forma amortizada. De qualquer forma, a complexidade é fatorial, o que é computacionalmente inviável para grafos grandes.
 
-#### 4.3 - Aplicação do Teorema Mestre
+### 4.3 - Aplicação do Teorema Mestre
 * **O Teorema Mestre é aplicável? Não.**
 * **Justificativa:** O Teorema Mestre é uma ferramenta para analisar a complexidade de algoritmos de "dividir para conquistar" que seguem uma relação de recorrência específica: `T(n) = aT(n/b) + f(n)` Onde:
     * `n` é o tamanho do problema.
@@ -201,7 +200,7 @@ O Problema do Caminho Hamiltoniano (HPP) se enquadra nas seguintes classes:
   
   A recorrência do nosso algoritmo de backtracking não se encaixa nesse modelo. A recorrência se parece mais com `T(V) = (V-1) * T(V-1) + O(V^2)`, pois um problema de tamanho `V` gera até `V-1` subproblemas de tamanho `V-1` (não `V/b`). O Teorema Mestre não pode ser aplicado a recorrências onde o tamanho do subproblema é reduzido por subtração (como `T(n-1)`) em vez de divisão (`T(n/b)`).
 
-#### 4.4 - Análise dos Casos de Complexidade
+### 4.4 - Análise dos Casos de Complexidade
 * **Pior Caso (`O(V * V!)`):** O pior caso ocorre quando o algoritmo precisa explorar a árvore de busca quase inteira. Isso acontece tipicamente em duas situações:
     1.  **Grafos Completos (K_v):** Em um grafo onde todos os vértices estão conectados, o algoritmo tentará `V-k` caminhos em cada nível `k`. Existem `V!` caminhos possíveis, e o algoritmo explorará muitos deles.
     2.  **Grafos sem Caminho Hamiltoniano:** O algoritmo só concluirá que não há caminho após explorar todas as permutações possíveis e falhar em todas.
@@ -213,6 +212,7 @@ O Problema do Caminho Hamiltoniano (HPP) se enquadra nas seguintes classes:
     * **Grafos Esparsos (poucas arestas):** O desempenho é geralmente melhor que o pior caso, pois a árvore de busca é "podada" (pruned) muito mais cedo. Em cada etapa, há menos vizinhos para explorar, e os caminhos tendem a atingir "becos sem saída" mais rapidamente, forçando o backtrack.
     * **Impacto no Desempenho:** A poda da árvore de busca é o fator crucial. Em um grafo do "mundo real", o algoritmo raramente atingirá o `O(V!)`, mas ainda assim será exponencial/fatorial, tornando-o lento para grafos com mais de 20-25 vértices.
 
-## Licença
+
+# Licença
 
 Este projeto está licenciado sob a Licença MIT.
